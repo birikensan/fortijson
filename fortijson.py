@@ -40,7 +40,8 @@ regex_next = re.compile(r'next$')
 regex_end = re.compile(r'^end$')
 
 config =[]
-
+config.append("{")
+config.append('"config firewall policy": {')
 # topからlastの行番号の範囲で
 for linenum in range(top, last + 1):
     # 行番号を指定して行を読み込み後続処理に進む。
@@ -70,10 +71,15 @@ for linenum in range(top, last + 1):
         config.append("}")
         
         
+config.append('}')
+config.append('}')
     
-print(len(config))
 for i in range(len(config)):
-    print(config[i])
     #
     # 文字列が},だったらひとつ前の配列の末尾から,を削除する。
+    if config[i] == "},":
+        config[i - 1] = re.sub('",','"',config[i -1])
 
+
+for line in config:
+    print(line)
