@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+﻿#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #
@@ -59,7 +59,7 @@ def policytojson(configfile):
         if regex_set.search(line) is not None:
             # 正規表現で設定項目と設定内容をひっかける
             setline = regex_set.search(line).groups()
-            # 設定内容は後ろに無意味な空白があるので置換する
+            # 設定内容はなぜか後ろに無意味な空白ができるので置換する
             setparam = regex_delempty.sub("",setline[1])
             # 設定内容のダブルコーテーションを置換する
             setparam = regex_dq.sub("",setparam)
@@ -69,6 +69,7 @@ def policytojson(configfile):
         if regex_next.search(line) is not None:
             config.append("},")
 
+	# 最後のendを置換する部分
         if regex_end.search(line) is not None:
             config.append("}")
         
@@ -80,6 +81,7 @@ def policytojson(configfile):
         if config[i] == "},":
             config[i - 1] = re.sub('",','"',config[i -1])
 
+        # 文字列が}だったら、ひとつ前の配列の末尾から,を削除する。
         if config[i] == "}":
             config[i - 1] = re.sub('},','}',config[i -1])
 
@@ -109,29 +111,29 @@ def jsontoparam(json_conf,filename):
     #　配列から重複を削除し、ユニークな設定項目配列を作成する。
     param_array = list(set(params))
 
-    # ポリシーID配下の辞書の中身をチェックし、標準出力する。
-    # ポリシーIDを一つずつ変数idに格納する。
     policy_array = []
     policy_line = ''
+    # ポリシーIDを一つずつ変数idに格納する。
     for id in iter(json_conf['config firewall policy'].keys()):
-        # 設定項目の配列から一つずつ設定項目をparamに格納する。
+        # ユニークな設定項目の配列から一つずつ設定項目をparamに格納する。
         for param in param_array:
             # 辞書の中にparamの設定内容があるかチェックして、pilicy_lineに要素を追記していく
             policy_line = policy_line + ',' + json_conf['config firewall policy'][id].get(param,"-")
-            #print(param + ":" + json_conf['config firewall policy'][id].get(param,"-"))
         #　追記した要素をpolicy_array配列に格納する。
         policy_array.append(id+policy_line)
         # 次のIDに備えてpolicy_lineを初期化する
         policy_line = ''
 
-    #　ポリシー一覧を出力するために、1行目を出力する
+    #　ポリシー一覧の見出しとなる1行目をparam_lineに格納する。
     param_line = 'id'
     for param in param_array:
         param_line = param_line + "," + param
 
+　　# csvファイルにparam_line（見出しを書き込む）
     f = open("./static/"+filename+".csv",'w')
     f.write(param_line+"\n")
 
+　　# csvファイルにpolicy_array（ID単位のルール）を書き込む
     policy = ''
     for policy in policy_array:
         f.write(policy+"\n")
