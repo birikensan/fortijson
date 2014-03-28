@@ -17,23 +17,23 @@ def index():
 def upload():
     configfile = request.files.get('file')
     
-    # policytojson$B$GFI$_9~$`$?$a$N(Btemp$B%U%!%$%k$r:n@.$9$k!#(B
+    # policytojsonで読み込むためのtempファイルを作成する。
     f = tempfile.NamedTemporaryFile()
     strline = ''
-    # HTML$B$+$i<u$1$C$?%U%!%$%k$,(Bbyte$B$J$N$G!"0l9T$:$DJ8;zNs$KJQ49$7$FJQ?t$K3JG<$9$k(B
-    # $B$b$C$H$$$$J}K!$,$"$j$=$&!#!#!#(B
+    # HTMLから受けったファイルがbyteなので、一行ずつ文字列に変換して変数に格納する
+    # もっといい方法がありそう。。。
     for line in configfile.file.readlines():
         strline = strline + line.decode()
-    # byte$B$KLa$7$F(Btemp$B%U%!%$%k$K=q$-9~$_(B
+    # byteに戻してtempファイルに書き込み
     f.write(strline.encode())
-    # temp$B%U%!%$%k$N%Q%9$r%a%=%C%I$KEO$7$F!"(Bjson$B$J<-=q7?$K$9$k!#(B
+    # tempファイルのパスをメソッドに渡して、jsonな辞書型にする。
     policyjson = fortijson.policytojson(f.name)
-    # $B=PNO@h%U%!%$%kL>MQ$N;~9o$r<hF@$9$k(B$
+    # 出力先ファイル名用の時刻を取得する$
     now = str(datetime.datetime.now())
     filename = configfile.filename+"_"+now
     f.close
 
-    # $B<-=q$H;~9o$r0z?t$K4X?t$r8F$S=P$9(B$
+    # 辞書と時刻を引数に関数を呼び出す$
     fortijson.jsontoparam(policyjson,filename)
 
     return template('index',filename=filename)
