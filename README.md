@@ -13,13 +13,16 @@ policytojsonで作成された辞書オブジェクトとファイル名を渡�
 
 ### index.py
 ![FPSG](http://aimless.jp/images/FPSG.png)
+[GUIが動作しているサイト](http://aimless.jp/forti "FPSG")
 
 policytojsonとjsontoparamを使ったGUIです。FortiGateのコンフィグをアップロードすると、FWポリシーの部分がいい感じで整理されたCSVとして出力されます。
 bottle+gunicornで実装されており/fortiのサブディレクトリとして公開することを想定した作りになっています。
 ※変換後のファイルがサーバのローカルに保存されます。
 
 ## 使い方
-python3で書いています。virtualenvなどでpython3が使える環境を用意してください。
+python3で書いています。python2系での動作確認は行っていません。  
+virtualenvなどでpython3が使える環境を用意してください。  
+各メソッドの使い方はindex.pyを参考にしてください。
 
 	git clone https://github.com/kongou-ae/fortijson.git
 	cd fortijson
