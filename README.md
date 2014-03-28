@@ -1,5 +1,5 @@
 # fortijson
-FortiGateのコンフィグファイルをjsonにするpythonスクリプトを目指しています。
+FortiGateのコンフィグファイルをjsonにするpythonスクリプトを目指しています。  
 FortiOS4.0 MR3で動作確認を行っています。
 
 ## 機能
@@ -18,12 +18,12 @@ policytojsonとjsontoparamを使ったGUIです。FortiGateのコンフィグを
 bottle+gunicornで実装されており/fortiのサブディレクトリとして公開することを想定した作りになっています。
 ※変換後のファイルがサーバのローカルに保存されます。
 
-## GUIの使い方
+## 使い方
 python3で書いています。virtualenvなどでpython3が使える環境を用意してください。
 
 	git clone https://github.com/kongou-ae/fortijson.git
 	cd fortijson
-    ### 必要に応じてpipでモジュールをインストールしてください。
+    ### GUIを利用する場合は、必要に応じてpipでモジュールをインストールしてください。
 	pip install bottle
 	pip install jinja2
 	pip install gunicorn
