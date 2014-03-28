@@ -9,7 +9,7 @@ import json
 def policytojson(configfile):
     u"""FortiGateのコンフィグファイルを文字列として渡してください。
     json化を経由して辞書オブジェトを戻します。
-    """"
+    """
 
     # config firewall policyの場所を探して変数topに格納する。
     top = 0
@@ -104,7 +104,7 @@ def policytojson(configfile):
 def jsontoparam(json_conf,filename):
     u"""policytojsonメソッド作成された辞書オブジェクトを渡してください。
     辞書の内容をCSV形式でファイルに書き込みます。
-    """"
+    """
 
     # ポリシーで設定されている設定項目を抽出する。
     # ポリシーidの箇所をイテレータで確認する。
