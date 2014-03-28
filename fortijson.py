@@ -129,7 +129,7 @@ def jsontoparam(json_conf,filename):
     for param in param_array:
         param_line = param_line + "," + param
 
-    f = open(filename+".csv",'w')
+    f = open("./static/"+filename+".csv",'w')
     f.write(param_line+"\n")
 
     policy = ''
