@@ -129,11 +129,11 @@ def jsontoparam(json_conf,filename):
     for param in param_array:
         param_line = param_line + "," + param
 
-　　# csvファイルにparam_line（見出しを書き込む）
+    # csvファイルにparam_line（見出しを書き込む）
     f = open("./static/"+filename+".csv",'w')
     f.write(param_line+"\n")
 
-　　# csvファイルにpolicy_array（ID単位のルール）を書き込む
+    # csvファイルにpolicy_array（ID単位のルール）を書き込む
     policy = ''
     for policy in policy_array:
         f.write(policy+"\n")
