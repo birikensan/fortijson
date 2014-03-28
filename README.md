@@ -12,6 +12,8 @@ FortiOS4.0 MR3で動作確認を行っています。
 policytojsonで作成された辞書オブジェクトとファイル名を渡すと、辞書オブジェクトの中身を整形して、「ファイル名.csv」のファイルを作成します。
 
 ### index.py
+![FPSG](http://aimless.jp/images/FPSG.png)
+
 policytojsonとjsontoparamを使ったGUIです。FortiGateのコンフィグをアップロードすると、FWポリシーの部分がいい感じで整理されたCSVとして出力されます。
 bottle+gunicornで実装されており/fortiのサブディレクトリとして公開することを想定した作りになっています。
 ※変換後のファイルがサーバのローカルに保存されます。
