@@ -1,18 +1,20 @@
 # fortijson
 FortiGateのコンフィグファイルをjsonにするpythonスクリプトを目指しています。
+FortiOS4.0 MR3で動作確認を行っています。
 
 ## 機能
 
 ### fortijson.policytojson
 文字列のコンフィグファイルを渡すと、FWポリシー（config firewal policy）の部分をjson化した上で辞書オブジェクトとして戻します。途中のtmp変数に、json化された文字列が格納されています。  
-※VDOMを利用しているconfigは正常に動作しません。VDOMごとに取得したコンフィグファイルを利用してください。
+※config firewal policy～endの中にconfig hogehogeが出てくるコンフィグは正常に動作しません。例：VDOM、identity-based-policy
 
 ### fortijson.jsontoparam
 policytojsonで作成された辞書オブジェクトとファイル名を渡すと、辞書オブジェクトの中身を整形して、「ファイル名.csv」のファイルを作成します。
 
 ### index.py
 policytojsonとjsontoparamを使ったGUIです。FortiGateのコンフィグをアップロードすると、FWポリシーの部分がいい感じで整理されたCSVとして出力されます。
-bottle+gunicornで実装されています。
+bottle+gunicornで実装されており/fortiのサブディレクトリとして公開することを想定した作りになっています。
+※変換後のファイルがサーバのローカルに保存されます。
 
 ## GUIの使い方
 python3で書いています。virtualenvなどでpython3が使える環境を用意してください。
