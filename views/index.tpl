@@ -15,7 +15,7 @@
     <input type='submit' value='Convert'>
     </form>
     {% if filename %}
-        <p>Parameter-sheet is as below</p>
+        <p>Link to parameter-sheet is as below</p>
         <a href="./forti/static/{{filename}}.csv">{{ filename}}.csv</a>
     {% endif %}
 </body>
