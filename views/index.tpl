@@ -12,7 +12,7 @@
     <h1>FortiGate parameter-sheet generator</h1>
     <form action='/forti' method='post' enctype='multipart/form-data'>
     <input type='file' name='file'>
-    <input type='submit' value='•ÏŠ·!!'>
+    <input type='submit' value='Convert'>
     </form>
     {% if filename %}
         <p>is as below</p>
