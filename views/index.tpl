@@ -18,5 +18,21 @@
         <p>Link to parameter-sheet is as below</p>
         <a href="./forti/static/{{filename}}.csv">{{ filename}}.csv</a>
     {% endif %}
+    <h2>概要</h2>
+    <p>　コンフィグファイルをCSV形式のパラメータシートに変換するツールです。現在はFWポリシー（config firewall policy）にのみ対応しています。</p>
+    <h2>使い方</h2>
+    <ol>
+        <li>[参照]ボタンを押下して、パラメータシートに変換したいコンフィグファイルを選びます。</li>
+        <li>[Convert]ボタンを押下します。すると、パラメータシートのリンクが表示されます。</li>
+        <li>表示されたリンクを選択して、変換後のパラメータシートを入手します。</p>
+    </ol>
+    <h2>注意</h2>
+    <ol>
+        <li>以下のコンフィグは非対応です。</li>
+            <ul>
+                <li>VDOMを利用しているコンフィグ。（コンフィグをそれぞれのFWに分けたファイルをご利用下さい。）</li>
+                <li>config hogehogeの構文が入れ子になっているコンフィグ</li>
+            </ul>
+    </ol>
 </body>
 </html>
