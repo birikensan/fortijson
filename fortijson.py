@@ -116,6 +116,7 @@ def policytojson(configfile):
     for line in config:
         tmp = tmp + line
 
+    print(tmp)
     # 格納した変数（str）をjsonモジュールで辞書型に変更する。
     json_conf = json.loads(tmp)
     # 辞書型を戻す
@@ -133,9 +134,9 @@ def jsontoparam(json_conf,filename):
     for id in iter(json_conf['config firewall policy'].keys()):
         # ポリシーID配下の設定項目をイテレータで確認する
         for value in iter(json_conf['config firewall policy'][id].keys()):
-            print(value)
-            # 確認した要素を配列に格納する。
-            params.append(value)
+            if value != "config identity-based-policy":
+                # 確認した要素を配列に格納する。
+                params.append(value)
 
     #　配列から重複を削除し、ユニークな設定項目配列を作成する。
     param_array = list(set(params))
