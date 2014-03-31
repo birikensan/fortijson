@@ -43,6 +43,8 @@ def policytojson(configfile):
     regex_dq = re.compile(r'\"')
     regex_next = re.compile(r'next$')
     regex_end = re.compile(r'^end$')
+    regex_ibp = re.compile(r'(config identity-based-policy)$')
+    regex_ibp_end = re.compile(r'^\s+end$')
 
     config =[]
     config.append("{")
@@ -68,25 +70,44 @@ def policytojson(configfile):
             setparam = regex_dq.sub("",setparam)
             config.append('"'+setline[0]+'":"'+setparam+'",')
 
-        # nextを置換する部分
-        if regex_next.search(line) is not None:
+        # config identity-based-policy
+        if regex_ibp.search(line) is not None:
+            config.append('"config identity-based-policy":{')
+
+        if regex_ibp_end.search(line) is not None:
             config.append("},")
 
-	# 最後のendを置換する部分
+        # nextを置換する部分
+        if regex_next.search(line) is not None:
+            config.append("}")
+
+        # 最後のendを置換する部分
         if regex_end.search(line) is not None:
             config.append("}")
         
         
     # 微調整する
+    regex_id = re.compile(r'"[0-9]+":{')
     for i in range(len(config)):
         #
+        # "id"nomaeno oshirini , wo tsukeru
+        if regex_id.search(config[i]) and i > 3:
+            config[i - 1] = config[i - 1] + ','
+
+    regex_ibp = re.compile(r'"config identity-based-policy":{')
+    for i in range(len(config)):
+        if regex_ibp.search(config[i]):
+            config[i] = re.sub(',','',config[i])
+
+    for i in range(len(config)):
         # 文字列が},だったらひとつ前の配列の末尾から,を削除する。
         if config[i] == "},":
-            config[i - 1] = re.sub('",','"',config[i -1])
+            config[i - 1] = re.sub(',','',config[i -1])
 
         # 文字列が}だったら、ひとつ前の配列の末尾から,を削除する。
         if config[i] == "}":
-            config[i - 1] = re.sub('},','}',config[i -1])
+            config[i - 1] = re.sub(',','',config[i -1])
+
 
     config.append('}')
 
@@ -95,6 +116,7 @@ def policytojson(configfile):
     for line in config:
         tmp = tmp + line
 
+    print(tmp)
     # 格納した変数（str）をjsonモジュールで辞書型に変更する。
     json_conf = json.loads(tmp)
     # 辞書型を戻す
