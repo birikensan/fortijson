@@ -30,7 +30,6 @@
         <li>以下のコンフィグは非対応です。</li>
             <ul>
                 <li>VDOMを利用しているコンフィグ。（コンフィグをそれぞれのFWに分けたファイルをご利用下さい。）</li>
-                <li>config hogehogeの構文が入れ子になっているコンフィグ（例：identity based policy）</li>
             </ul>
     </ol>
 </body>
