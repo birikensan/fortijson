@@ -8,12 +8,12 @@ from bottle import jinja2_template as template
 import tempfile
 
 # サブディレクトリ/fortiで公開する
-@route("/forti-dev")
+@route("/forti")
 def index():
     return template('index')
     
 # configファイルをPOSTした後の処理
-@route("/forti-dev", method='POST')
+@route("/forti", method='POST')
 def upload():
     # Formからファイルを受け取る。
     configfile = request.files.get('file')    
@@ -42,7 +42,7 @@ def upload():
     return template('index',filename=filename)
 
 # 作成されたファイルを公開するための処理
-@route('/forti-dev/static/<filename>')
+@route('/forti/static/<filename>')
 def static(filename):
     return static_file(filename, root='./static')
 

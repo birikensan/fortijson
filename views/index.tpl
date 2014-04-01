@@ -9,13 +9,13 @@
 </head>
 <body>
     <h1>DEV_FortiGate parameter-sheet generator</h1>
-    <form action='/forti-dev' method='post' enctype='multipart/form-data'>
+    <form action='/forti' method='post' enctype='multipart/form-data'>
     <input type='file' name='file'>
     <input type='submit' value='Convert'>
     </form>
     {% if filename %}
         <p>Link to parameter-sheet is as below</p>
-        <a href="./forti-dev/static/{{filename}}.csv">{{ filename}}.csv</a>
+        <a href="./forti/static/{{filename}}.csv">{{ filename}}.csv</a>
     {% endif %}
     <h2>概要</h2>
     <p>　コンフィグファイルをCSV形式のパラメータシートに変換するツールです。現在はFWポリシー（config firewall policy）にのみ対応しています。</p>
