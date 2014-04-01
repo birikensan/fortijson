@@ -53,15 +53,15 @@ def policytojson(configfile):
     for linenum in range(top, last + 1):
         # 行番号を指定して行を読み込み後続処理に進む。
         line = linecache.getline(configfile,linenum)
-    
+
         # edit hogehogeを変換する部分
-        if regex_id.search(line) is not None:
+        if regex_id.search(line):
             # 正規表現で数字の部分ひっかける
             idnum = regex_id.search(line).groups(0)
             config.append('"'+idnum[0]+'":{')
 
         # set hoehoge hogehogeを変換する部分
-        if regex_set.search(line) is not None:
+        if regex_set.search(line):
             # 正規表現で設定項目と設定内容をひっかける
             setline = regex_set.search(line).groups()
             # 設定内容はなぜか後ろに無意味な空白ができるので置換する
@@ -70,19 +70,19 @@ def policytojson(configfile):
             setparam = regex_dq.sub("",setparam)
             config.append('"'+setline[0]+'":"'+setparam+'",')
 
-        # config identity-based-policy
-        if regex_ibp.search(line) is not None:
+        # config identity-based-policyを変換する部分
+        if regex_ibp.search(line):
             config.append('"config identity-based-policy":{')
 
-        if regex_ibp_end.search(line) is not None:
+        if regex_ibp_end.search(line):
             config.append("},")
 
         # nextを置換する部分
-        if regex_next.search(line) is not None:
+        if regex_next.search(line):
             config.append("}")
 
         # 最後のendを置換する部分
-        if regex_end.search(line) is not None:
+        if regex_end.search(line):
             config.append("}")
         
         
@@ -116,7 +116,6 @@ def policytojson(configfile):
     for line in config:
         tmp = tmp + line
 
-    print(tmp)
     # 格納した変数（str）をjsonモジュールで辞書型に変更する。
     json_conf = json.loads(tmp)
     # 辞書型を戻す
@@ -134,13 +133,24 @@ def jsontoparam(json_conf,filename):
     for id in iter(json_conf['config firewall policy'].keys()):
         # ポリシーID配下の設定項目をイテレータで確認する
         for value in iter(json_conf['config firewall policy'][id].keys()):
+            # IDP以外の設定項に対する処理
             if value != "config identity-based-policy":
                 # 確認した要素を配列に格納する。
                 params.append(value)
+            # IBPの配下のキーに関する処理
+            else:
+                # IBP設定配下のIDを一つずつ確認し
+                for ibp_id in json_conf['config firewall policy'][id]["config identity-based-policy"].keys():
+                    # 各ID配下の設定項目をイテレータで確認する。
+                    for value in iter(json_conf['config firewall policy'][id]["config identity-based-policy"][ibp_id].keys()):
+                        # 確認した要素を配列に格納する
+                        params.append(value)
+
 
     #　配列から重複を削除し、ユニークな設定項目配列を作成する。
     param_array = list(set(params))
 
+    # CSVとして出力するポリシーを1行ずつpolicy_lineに格納していく処理
     policy_array = []
     policy_line = ''
     # ポリシーIDを一つずつ変数idに格納する。
@@ -149,12 +159,26 @@ def jsontoparam(json_conf,filename):
         for param in param_array:
             # 辞書の中にparamの設定内容があるかチェックして、pilicy_lineに要素を追記していく
             policy_line = policy_line + ',' + json_conf['config firewall policy'][id].get(param,"-")
+
         #　追記した要素をpolicy_array配列に格納する。
         policy_array.append(id+policy_line)
-        # 次のIDに備えてpolicy_lineを初期化する
         policy_line = ''
 
-    #　ポリシー一覧の見出しとなる1行目をparam_lineに格納する。
+        # IBPの有無を確認し、あればID.IBP-IDのログをpolicy_lineに追加する。
+        # ID配下のキーにIDPがあるか確認する。
+        if json_conf['config firewall policy'][id].get('identity-based'):
+            # その配下のIBP-IDをチェックして見つかったID分処理を実施する
+            for ibp_id in iter(json_conf['config firewall policy'][id]["config identity-based-policy"].keys()):
+                print(json_conf['config firewall policy'][id]["config identity-based-policy"][ibp_id])
+                # ユニークな設定項目が格納された配列から要素を一つずつ取り出して
+                for param in param_array:
+                    # 辞書の中にparamの設定内容があるかチェックして、policy_lineに要素を追記していく。
+                    policy_line = policy_line + ',' + json_conf['config firewall policy'][id]["config identity-based-policy"][ibp_id].get(param,"-")
+                policy_array.append(id + '.' + ibp_id + policy_line)
+                # 次のIDに備えてpolicy_lineを初期化する
+                policy_line = ''
+
+    # ポリシー一覧の見出しとなる1行目をparam_lineに格納する。
     param_line = 'id'
     for param in param_array:
         param_line = param_line + "," + param
