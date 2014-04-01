@@ -6,7 +6,7 @@ FortiOS4.0 MR3で動作確認を行っています。
 
 ### fortijson.policytojson
 文字列のコンフィグファイルを渡すと、FWポリシー（config firewal policy）の部分をjson化した上で辞書オブジェクトとして戻します。途中のtmp変数に、json化された文字列が格納されています。  
-※config firewal policy～endの中にconfig hogehogeが出てくるコンフィグは正常に動作しません。例：VDOM、identity-based-policy
+※VDOMなど、config firewal policyが複数出てくるコンフィグファイルには対応していません。VDOMを利用した機器のコンフィグファイルを変換したい場合は、各VDOMの設定を別ファイルに分けて下さい。
 
 ### fortijson.jsontoparam
 policytojsonで作成された辞書オブジェクトとファイル名を渡すと、辞書オブジェクトの中身を整形して、「ファイル名.csv」のファイルを作成します。
